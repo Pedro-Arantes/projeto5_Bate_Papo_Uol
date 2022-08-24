@@ -79,6 +79,7 @@ footer{
 
 main {
     margin-top:108px;
+    overflow-y:hidden;
 }
 
 .boxMsg{
@@ -90,6 +91,7 @@ main {
     display: flex;
     align-items: center;
     
+    margin-top: 5px;
 
     /*box-sizing: content-box;*/
 
