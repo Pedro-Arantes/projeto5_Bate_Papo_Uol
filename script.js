@@ -3,6 +3,7 @@ const chat = document.querySelector("main");
 let msg = "";
 let num = 0;
 let objName;
+let data;
 
 //let input = "";
 let local = "Todos"
@@ -53,7 +54,7 @@ function sendMessage(){
 
     requisicao.then(msgEnviada);
     requisicao.catch(erroEnvio);
-    getServerMsg();
+    
 
 }
 function getMessage(element){
@@ -66,9 +67,16 @@ function getServerMsg(){
     requisicao.catch(initErro);
 
 }
+/*function simpleUpdate(requisicao){
+    const dataArray = requisicao.data
+}*/
 function updateMsg(requisicao){
 
-    const dataArray = requisicao.data
+    const dataArray = requisicao.data;
+    if (dataArray === data) {
+        
+    }else{
+        data = requisicao.data ;
     for (let index = 0; index < dataArray.length; index++) {
 
         const remetente = dataArray[index].from;
@@ -78,37 +86,68 @@ function updateMsg(requisicao){
         const tempo = dataArray[index].time;
         let backGround = "";
 
+        
+
         if (tipo === "status") {
             backGround = "backGrey";
+            const msgModelo = `<div class="boxMsg  ${backGround}">
+            <p> <time>(${tempo})</time><strong>${remetente}</strong> para  <strong>${destinatario}</strong>:${texto} </p>
+            </div>`;
+            chat.innerHTML = chat.innerHTML + msgModelo;
+            
         }else if (tipo === "message"){
             backGround = "backWhite";
-        }else {
+            const msgModelo = `<div class="boxMsg  ${backGround}">
+            <p> <time>(${tempo})</time><strong>${remetente}</strong> para  <strong>${destinatario}</strong>:${texto} </p>
+            </div>`;    
+            chat.innerHTML = chat.innerHTML + msgModelo;
+            
+        }else  if (tipo === "private_message" &&  destinatario === userName){
             backGround = "backPink";
+            const msgModelo = `<div class="boxMsg  ${backGround}">
+            <p> <time>(${tempo})</time><strong>${remetente}</strong>  reservadamente para  <strong>${destinatario}</strong>:${texto} </p>
+            </div>`;
+            chat.innerHTML = chat.innerHTML + msgModelo;
         }
+        
+        
+        
 
-        const msgModelo = `<div class="boxMsg  ${backGround}">
-        <p> <time>(${tempo})</time><strong>${remetente}</strong> para  <strong>${destinatario}</strong>:${texto} </p>
-        </div>`;
-
-        chat.innerHTML = chat.innerHTML + msgModelo;
+        
         
 
     }
+    }
+    
     const mensagem = chat.lastChild;
     mensagem.scrollIntoView();
     
 }
 function msgEnviada(answer){
-console.log("Foi");
+    console.log("Foi");
+    getServerMsg();
 }
 function erroEnvio (erro){
-    console.log("erro");
+    console.log(erro.response);
+    window.location.reload();
+    
     //alert(erro);
 }
 function erroConnection(erro){
     console.log("erro na conexão!")
-    console.log(erro)
+    window.location.reload();
+    console.log(erro.response)
 }
+
+document.addEventListener("keypress", function(x) {
+    if(x.key === 'Enter') {
+    
+        const sendBtn = document.querySelector("#send");
+      
+        sendBtn.click();
+    
+    }
+  });
 
 
 initRoom();
