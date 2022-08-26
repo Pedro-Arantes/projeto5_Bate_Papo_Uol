@@ -4,7 +4,6 @@ let msg = "";
 let num = 0;
 let objName;
 let data;
-let t = 0 ;
 
 //let input = "";
 let local = "Todos"
@@ -18,43 +17,30 @@ function initRoom(){
 }
 
 function postName(answer){
-console.log(answer.status)
-    if(answer.status == 400){
-        alert("Ja existe alguém com esse nome.")
-        userName = prompt("Qual é o seu nome ?");
-        initRoom();
-    }else{
-        setInterval(tempo,1000);
-        setInterval(sendConnection,5000);
-    }
-        
-    
+    setInterval(sendConnection,5000);
     
     //console.log(answer);
 }
-function tempo() {
-    t++
-    console.log(t)
+
+function initErro(erro){
+    alert("Ja existe alguém com esse nome.")
+    userName = prompt("Qual é o seu nome ?");
+    initRoom();
 }
-function sentConnection(x){
-    console.log("enviou: " + x );
-    
-}
+
 function sendConnection(){
-    objName = {name: `${userName}`};
+    const objName = {name: `${userName}`};
     const requisicao =  axios.post(`https://mock-api.driven.com.br/api/v6/uol/status `,objName)
     requisicao.then(sentConnection);
     requisicao.catch(erroConnection);
 }
 
-function erroConnection(erro){
-    console.log("erro na conexão!")
-    //window.location.reload();
-    console.log(erro.response.status)
+function sentConnection(x){
+    console.log("enviou: " + x );
+    
 }
-function initErro(erro){
-    console.log(erro);
-}
+
+
 function sendMessage(){
    
     const  input =  document.querySelector("footer input");
@@ -94,9 +80,11 @@ function getServerMsg(){
 }*/
 function updateMsg(requisicao){
 
-
     const dataArray = requisicao.data;
-    chat.innerHTML = "";
+    if (dataArray === data) {
+        
+    }else{
+        data = requisicao.data ;
     for (let index = 0; index < dataArray.length; index++) {
 
         const remetente = dataArray[index].from;
@@ -137,7 +125,7 @@ function updateMsg(requisicao){
         
 
     }
-    
+    }
     
     const mensagem = chat.lastChild;
     mensagem.scrollIntoView();
@@ -146,7 +134,6 @@ function updateMsg(requisicao){
 function msgEnviada(answer){
     console.log("Foi");
     getServerMsg();
-    
 }
 function erroEnvio (erro){
     console.log(erro.response);
@@ -154,7 +141,11 @@ function erroEnvio (erro){
     
     //alert(erro);
 }
-
+function erroConnection(erro){
+    console.log("erro na conexão!")
+    window.location.reload();
+    console.log(erro.response)
+}
 
 document.addEventListener("keypress", function(x) {
     if(x.key === 'Enter') {
