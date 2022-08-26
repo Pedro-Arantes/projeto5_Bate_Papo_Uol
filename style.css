@@ -78,8 +78,10 @@ footer{
 }
 
 main {
-    margin-top:108px;
-    overflow-y:hidden;
+    margin-top: 80px;
+    height: 507px;
+    margin-bottom: 40px;
+    overflow-y:scroll;
 }
 
 .boxMsg{

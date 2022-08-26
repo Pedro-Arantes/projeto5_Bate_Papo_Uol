@@ -4,6 +4,7 @@ let msg = "";
 let num = 0;
 let objName;
 let data;
+let backGround = "";
 let t = 0 ;
 
 //let input = "";
@@ -24,7 +25,8 @@ console.log(answer.status)
         userName = prompt("Qual é o seu nome ?");
         initRoom();
     }else{
-        setInterval(tempo,1000);
+        //setInterval(tempo,1000);
+        setInterval(getServerMsg,3000);
         setInterval(sendConnection,5000);
     }
         
@@ -84,7 +86,7 @@ function getMessage(element){
 } 
 function getServerMsg(){
     const requisicao =  axios.get(`https://mock-api.driven.com.br/api/v6/uol/messages `)
-    //console.log (requisicao.data);
+    
     requisicao.then(updateMsg);
     requisicao.catch(initErro);
 
@@ -94,17 +96,22 @@ function getServerMsg(){
 }*/
 function updateMsg(requisicao){
 
-
+    console.log ("foi server ");
     const dataArray = requisicao.data;
     chat.innerHTML = "";
+    let remetente;
+    let destinatario;
+    let texto;
+    let tipo ;
+    let tempo;
     for (let index = 0; index < dataArray.length; index++) {
 
-        const remetente = dataArray[index].from;
-        const destinatario = dataArray[index].to;
-        const texto = dataArray[index].text;
-        const tipo = dataArray[index].type;
-        const tempo = dataArray[index].time;
-        let backGround = "";
+         remetente = dataArray[index].from;
+         destinatario = dataArray[index].to;
+         texto = dataArray[index].text;
+         tipo = dataArray[index].type;
+         tempo = dataArray[index].time;
+       
 
         
 
@@ -139,9 +146,9 @@ function updateMsg(requisicao){
     }
     
     
-    const mensagem = chat.lastChild;
+    const mensagem = chat.lastElementChild;
     mensagem.scrollIntoView();
-    
+    console.log ("outra parada");
 }
 function msgEnviada(answer){
     console.log("Foi");
@@ -169,4 +176,4 @@ document.addEventListener("keypress", function(x) {
 
 initRoom();
 getServerMsg();
-setInterval(getServerMsg,3000);
+
