@@ -1,3 +1,5 @@
+//DECLARAÇÃO DE VARIAVEIS GLOBAIS----------------------------
+
 let userName = prompt("Qual é o seu nome ?");
 const chat = document.querySelector("main");
 let msg = "";
@@ -9,6 +11,8 @@ let t = 0 ;
 
 //let input = "";
 let local = "Todos"
+
+//declaração de funções -------------------------------------
 
 function initRoom(){
     objName = {name: `${userName}`};
@@ -162,6 +166,7 @@ function erroEnvio (erro){
     //alert(erro);
 }
 
+//verificador de evento keypress enter
 
 document.addEventListener("keypress", function(x) {
     if(x.key === 'Enter') {
@@ -173,6 +178,8 @@ document.addEventListener("keypress", function(x) {
     }
   });
 
+
+//chamadas de funções------------------------------------- 
 
 initRoom();
 getServerMsg();
